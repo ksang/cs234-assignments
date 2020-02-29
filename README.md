@@ -17,4 +17,7 @@ Stanford CS234: Reinforcement Learning assignments and practices
 
 [Assignment 1 programming](/assignment1)
 
+Frozen Lake MDP, policy evaluation, policy improvement, policy iteration, value iteration.
+Details see source code [vi_and_pi.py](/assignment1/vi_and_pi.py)
+
 [Assignment 1 written](/assignment1_written)
