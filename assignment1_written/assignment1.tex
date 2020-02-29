@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{fullpage}
+
+
+\usepackage[numbers]{natbib}
+%\usepackage[textsize=tiny]{todonotes}
+\setlength{\marginparwidth}{11ex}
+
+\newcommand{\E}{\mathbb E}
+\usepackage{wrapfig}
+\usepackage{caption}
+
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+\usepackage{url}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{upgreek}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[mathscr]{euscript}
+\usepackage{mathtools}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+\newtheorem{cor}{Corollary}
+\newtheorem{assumption}{Assumption}
+\newtheorem{lem}{Lemma}
+\usepackage{xcolor}
+\usepackage{nicefrac}
+\usepackage{xr}
+%\usepackage{chngcntr}
+\usepackage{apptools}
+\usepackage[page, header]{appendix}
+\AtAppendix{\counterwithin{lem}{section}}
+\usepackage{titletoc}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1cm}
+\setlist[enumerate]{leftmargin=1cm}
+
+
+
+
+\definecolor{DarkRed}{rgb}{0.75,0,0}
+\definecolor{DarkGreen}{rgb}{0,0.5,0}
+\definecolor{DarkPurple}{rgb}{0.5,0,0.5}
+\definecolor{Dark}{rgb}{0.5,0.5,0}
+\definecolor{DarkBlue}{rgb}{0,0,0.7}
+\usepackage[bookmarks, colorlinks=true, plainpages = false, citecolor = DarkBlue, urlcolor = blue, filecolor = black, linkcolor =DarkGreen]{hyperref}
+\usepackage{breakurl}
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\allowdisplaybreaks[2]
+\newcommand{\prob}{\mathbb P}
+\newcommand{\Var}{\mathbb V}
+\newcommand{\Ex}{\mathbb E}
+\newcommand{\varV}{\mathscr V}
+\newcommand{\indicator}[1]{\mathbb I\{ #1 \} }
+\newcommand{\statespace}{\mathcal S}
+\newcommand{\actionspace}{\mathcal A}
+\newcommand{\saspace}{\statespace \times \actionspace}
+\newcommand{\satspace}{\mathcal Z}
+\newcommand{\numsa}{\left|\saspace\right|}
+\newcommand{\numsat}{\left|\satspace\right|}
+\newcommand{\numS}{S}
+\newcommand{\numA}{A}
+\newcommand{\wmin}{w_{\min}}
+\newcommand{\wminc}{w'_{\min}}
+\newcommand{\range}{\operatorname{rng}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\dspace}{\mathcal D}
+\newcommand{\numD}{|\dspace|}
+\newcommand{\numSucc}[1]{|\statespace(#1)|}
+\newcommand{\succS}[1]{\statespace(#1)}
+
+\newcommand{\reals}{\mathbb R}
+\newcommand{\const}{\textrm{const.}}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\llnp}{\operatorname{llnp}}
+\newcommand{\defeq}{:=}
+\usepackage{xspace}
+\newcommand{\algname}{UBEV\xspace}
+
+\mathtoolsset{showonlyrefs=true}
+
+\let\temp\epsilon
+\let\epsilon\varepsilon
+\newcommand{\cK}{\mathcal K}
+\newcommand{\cI}{\mathcal I}
+\newcommand{\Pro}{\mathbb P}
+
+\title{CS 234 Winter 2020 \\ Assignment 1 \\ Due: January 22 at 11:59 pm}
+\date{}
+
+\begin{document}
+	\maketitle
+\noindent For submission instructions please refer to \href{http://web.stanford.edu/class/cs234/assignments.html}{website}.
+For all problems, if you use an existing result from either the literature or a textbook to solve the exercise, you need to cite the source.
+
+
+
+\input{tex/Q_Grid.tex}
+\newpage
+\input{tex/Q_policies.tex}
+\newpage
+\input{tex/Q_fixedpoint.tex}
+\newpage
+
+\begin{section}{Frozen Lake MDP [25 pts]}
+Now you will implement value iteration and policy iteration for the Frozen Lake environment
+from \href{"https://gym.openai.com/envs/FrozenLake-v0"}{OpenAI Gym}. We have provided
+custom versions of this environment in the starter code.
+\begin{enumerate}[label=(\alph*)]
+
+\item \textbf{(coding)} (10 pts) Read through \texttt{vi\_and\_pi.py} and implement \texttt{policy\_evaluation}, \texttt{policy\_improvement} and \texttt{policy\_iteration}. The stopping tolerance (defined as $\max_s |V_{old}(s) - V_{new}(s)|$) is tol = $10^{-3}$
+. Use $\gamma = 0.9$. Return the optimal value function and the optimal policy.
+\item \textbf{(coding)} (10 pts) Implement \texttt{value\_iteration} in \texttt{vi\_and\_pi.py}. The stopping tolerance is tol =
+$10^{-3}$
+. Use $\gamma = 0.9$. Return the optimal value function and the optimal policy.
+
+\item \textbf{(written)} (5 pts) Run both methods on the Deterministic-4x4-FrozenLake-v0 and
+Stochastic-4x4-FrozenLake-v0 environments. In the second environment, the dynamics of the world are stochastic. How does stochasticity affect the number of iterations required, and the resulting policy?
+
+\end{enumerate}
+\end{section}
+
+\end{document}

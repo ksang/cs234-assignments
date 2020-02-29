@@ -1,0 +1,30 @@
+\section{Fixed Point [25 pts]}
+
+In this exercise we will use  \href{https://en.wikipedia.org/wiki/Cauchy_sequence}{Cauchy sequences}  to prove that value iteration will converge to a unique fixed point (in this case, a value function $V$) regardless of the starting point. An element $V$ is a fixed point for an operator $B$ (in this case the Bellman operator) if performance of $B$ on $V$ returns $V$, i.e., $BV = V$. Recall that the Bellman backup operator $B$ is defined as (in lecture 2):
+\begin{equation}
+    V_{k+1} \overset{def}{=} BV_{k} = \max_a[ R(s, a) + \gamma\sum_{s' \in S}p(s'|s,a)V^\pi_{k}(s')].
+\end{equation}
+
+Additionally, in lecture 2, we proved that this Bellman backup is a contraction for $\gamma < 1$ on the infinity norm
+\begin{equation}
+    \|BV' - BV''\|_\infty\leq \gamma \|V' - V''\|_\infty
+\end{equation}
+for any two value functions $V'$ and $V''$, meaning if we apply it to two different value functions, the distance between value functions (in the $\infty$ norm) shrinks after application of the operator to each element.
+
+\begin{enumerate}[label=(\alph*)]
+\item (5pts) Prove by induction that $\|V_{n+1} - V_{n}\|_\infty \leq \gamma^n \|V_1 - V_0\|_\infty$
+
+
+\item (10pts) Prove that for any $c>0$, $\|V_{n+c} - V_n\|_\infty \leq \frac{\gamma^n}{1-\gamma}\|V_1 - V_0\|_\infty$
+\end{enumerate}
+
+
+A \emph{Cauchy sequence} is a sequence whose elements become arbitrarily close to each other as the sequence progresses. Formally a sequence $\{a_n\}$ in metric space $X$ with distance metric $d$ is a Cauchy sequence if given an $\epsilon > 0$ there exists k such that if m, n > k then $d(a_m, a_n) < \epsilon$. Real Cauchy sequences are convergent.
+\begin{enumerate}[label=(\alph*)]
+\setcounter{enumi}{2}
+\item (2pts) Using this information about Cauchy sequences, argue that the sequence $V_0, V_1, ...$ is a Cauchy sequence and is therefore convergent and must converge to some element $V$ and this V is a fixed point
+
+\item (8pts) Show that this fixed point is unique. 
+
+
+\end{enumerate}
