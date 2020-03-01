@@ -37,15 +37,13 @@ There are totally three assignments, each of them has programming part and writt
 
 - Install missing packages from the assignments.
 
- * if some package is missing, tex compiler such as `pdftex` will give you their name, e.g. `nicefrac.sty`.
-
- * Search the package name on [CTAN](https://www.ctan.org/), and get the parent package name, e.g. `units`
-
- * Below command will install the package:
+    * if some package is missing, tex compiler such as `pdftex` will give you their name, e.g. `nicefrac.sty`.
+    * Search the package name on [CTAN](https://www.ctan.org/), and get the parent package name, e.g. `units`
+    * Below command will install the package:
 
         sudo tlmgr install units
 
- * I already did this for you, here is the command for install all dependencies for this assignment:
+    * I already did this for you, here is the command for install all dependencies for this assignment:
 
         sudo tlmgr install units fullpage preprint wrapfig was apptools appendix titlesec enumitem breakurl algorithm2e ifoddpage relsize cm-super
 
