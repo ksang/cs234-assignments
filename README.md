@@ -41,11 +41,14 @@ There are totally three assignments, each of them has programming part and writt
     * Search the package name on [CTAN](https://www.ctan.org/), and get the parent package name, e.g. `units`
     * Below command will install the package:
 
-        sudo tlmgr install units
+            sudo tlmgr install units
 
     * I already did this for you, here is the command for install all dependencies for this assignment:
 
-        sudo tlmgr install units fullpage preprint wrapfig was apptools appendix titlesec enumitem breakurl algorithm2e ifoddpage relsize cm-super
+            sudo tlmgr install units fullpage preprint \
+                                wrapfig was apptools appendix \
+                                titlesec enumitem breakurl \
+                                algorithm2e ifoddpage relsize cm-super
 
 - Use your favorite editor with LaTeX support and enjoy the math. I'm using [Atom](https://atom.io/) with [LaTex](https://atom.io/packages/latex) and [pdf-view](https://atom.io/packages/pdf-view) package.
 
