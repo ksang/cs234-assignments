@@ -12,10 +12,42 @@ Consider the following grid environment. Starting from any unshaded square, you 
 \begin{enumerate}[label=(\alph*)]
 \item (3pts) Define the value of $r_s$ that would cause the optimal policy to return the shortest path to the green target square (no. 12). Using this $r_s$, find the optimal value for each square.
 
+\textbf{Answer:}
+
+$r_s = -1$
+
+\begin{bmatrix}
+0 & 1 & 2 & 3 \\
+-5& 2 & 3 & 4 \\
+2 & 3 & 4 & 5 \\
+1 & 0& -1& -2
+\end{bmatrix}
 
 \item (3pts) Lets refer to the value function derived in (a) as $V^{\pi_g}_{old}$ and the policy as $\pi_g$. Suppose we are now in a new gridworld where all the rewards ($r_s$, $r_g$, and $r_r$) have $+2$ added to them. Consider still following $\pi_g$ of the original gridworld, what will the new values $V^{\pi_g}_{new}$ be in this second gridworld?
 
+\textbf{Answer:}
+
+\begin{bmatrix}
+12 & 11 & 10 & 9 \\
+-3 & 10 & 9  & 8 \\
+10 & 9  & 8  & 7 \\
+11 & 12 & 13 & 14
+\end{bmatrix}
+
 \item (3pts) Consider a general MDP with rewards, and transitions. Consider a discount factor of $\gamma$. For this case assume that the horizon is infinite (so there is no termination). A policy $\pi$ in this MDP induces a value function $V^\pi$ (lets refer to this as $V^\pi_{old}$). Now suppose we have a new MDP where the only difference is that all rewards have a constant $c$ added to them. Can you come up with an expression for the new value function $V^\pi_{new}$ induced by $\pi$ in this second MDP in terms of $V^\pi_{old}$, $c$, and $\gamma$?
+
+\textbf{Answer:}
+
+\begin{equation}
+\begin{split}
+V^\pi_{old}(s) & = E_{\pi}[\sum_{t=0}^{\infty} \gamma^{t}r_t|s_0=s] \\
+V^\pi_{new}(s) & = E_{\pi}[\sum_{t=0}^{\infty}\gamma^{t}(r_t + c)|s_0=s] \\
+               & = E_{\pi}[\sum_{t=0}^{\infty}\gamma^{t}r_t|s_0=s] + c\sum_{t=0}^{\infty}\gamma^{t} \\
+               & = V^\pi_{old}(s) + \frac{c}{1-\gamma}
+\end{split}
+\end{equation}
+
+
 
 \item (2pts) Lets go back to our gridworld from (a) with the default values for $r_g$, $r_r$, $\gamma$ and with the value you specified for $r_s$. Suppose we now derived a second gridworld by adding a constant $c$ to all rewards ($r_s$, $r_g$, and $r_r$) such that $r_s = +2$. How does the optimal policy change (Just give a one or two sentence description)? What do the values of the unshaded squares become?
 
