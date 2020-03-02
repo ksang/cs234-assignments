@@ -45,6 +45,7 @@ There are totally three assignments, each of them has programming part and writt
 
     * I already did this for you, here is the command for install all dependencies for this assignment:
 
+            sudo tlmgr update --self
             sudo tlmgr install units fullpage preprint \
                                 wrapfig was apptools appendix \
                                 titlesec enumitem breakurl \
