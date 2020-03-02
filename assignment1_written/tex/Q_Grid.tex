@@ -57,9 +57,27 @@ V^\pi_{new}(s) & = \Ex_{\pi}[\sum_{t=0}^{\infty}\gamma^{t}(r_t + c)|s_0=s] \\
 
 \item (2pts) Lets go back to our gridworld from (a) with the default values for $r_g$, $r_r$, $\gamma$ and with the value you specified for $r_s$. Suppose we now derived a second gridworld by adding a constant $c$ to all rewards ($r_s$, $r_g$, and $r_r$) such that $r_s = +2$. How does the optimal policy change (Just give a one or two sentence description)? What do the values of the unshaded squares become?
 
+\textbf{Answer:}
+
+It will become looping at states other than the terminate states, because each step will gain positive reward value.
+
+Unshaded squares will become value $+\infty$.
+
 \item (2pts) Now take the second gridworld from part (d) and change $\gamma$ such that $0 < \gamma < 1$. Can the optimal policy change and does it depend on your choice of gamma? (A brief description is sufficient, no formal proof or mathematical analysis required).
 
+\textbf{Answer:}
+
+If $\gamma$ is close to $1$, the result is same, all unshaded squares will have value $+\infty$ and optimal policy is keep looping.
+
+if $\gamma$ is equal to some value closing to $0$, at some point optimal policy will be able to find a shortest path to green square.
+
 \item (2pts) Lets go back to our gridworld from (a) with the default values for $r_g$, $r_r$, $\gamma$ and with the value you specified for $r_s$. In this gridworld, our optimal policy from any unshaded square never terminates in the red square. Now suppose $r_s$ can take on any real, non-infinite value and is not restricted to $\{+1, 0, -1\}$ anymore. Give a value of $r_s$ such that there are unshaded squares starting from which following the optimal policy results in termination in the red square.
+
+\textbf{Answer:}
+
+\begin{equation}
+r_s \leq -5
+\end{equation}
 
 
 \end{enumerate}
