@@ -1,16 +1,51 @@
 \section{Value of Different Policies [35 pts]}
 In many situations such as healthcare or education, we cannot run any arbitrary policy and collect data from running those policies for evaluation. In these cases, we may need to take data collected from following one policy and use it to evaluate the value of a different policy. The equality proved in the following exercise can be an important tool for achieving this.
 The purpose of this exercise is to get familiar on how to compare the value of different policies, $\pi_1$ and $\pi_2$, on a fixed horizon MDP. A fixed horizon MDP is an MDP where the agent's state is reset after $H$ timesteps; $H$ is called the \emph{horizon} of the MDP. There is no discount (i.e., $\gamma=1$) and policies are allowed to be non-stationary, i.e., the action identified by a policy depends on the timestep in addition to the state.
-Let $x_t\sim \pi$ denote the distribution over states at timestep $t$ (for $1\leq t \leq H$) upon following policy $\pi$ and $V^{\pi}_t(x_t)$ denote the value function of policy $\pi$ in state 
-$x_t$ and timestep $t$, and $Q_t^{\pi}(x_t,a)$ denote the corresponding 
+Let $x_t\sim \pi$ denote the distribution over states at timestep $t$ (for $1\leq t \leq H$) upon following policy $\pi$ and $V^{\pi}_t(x_t)$ denote the value function of policy $\pi$ in state
+$x_t$ and timestep $t$, and $Q_t^{\pi}(x_t,a)$ denote the corresponding
 $Q$ value associated to action $a$. As a clarifying example, we denote $\E_{x_t \sim \pi_1} V(x_t)$ to represent the average value of the value function $V(\cdot)$ over the states at timestep $t$ encountered upon following policy $\pi_1$. Please show the following:
 \begin{equation}
 \label{eq:1}
 V_1^{\pi_1}(x_1) - V_1^{\pi_2}(x_1) =  \sum_{t=1}^H \E_{x_t \sim \pi_2} \Big( Q_t^{\pi_1}(x_t,\pi_1(x_t,t)) - Q_t^{\pi_1}(x_t,\pi_2(x_t,t)) \Big)
 \end{equation}
 
-\textbf{Intuition:} The above expression can be interpreted in the following way. For concreteness, assume that $\pi_1$ is the better policy, i.e., achieving $V_1^{\pi_1}(x_1) \geq V_1^{\pi_2}(x_1)$. Suppose you're following policy $\pi_2$ and you are at timestep $t$ in state $x_t$. 
-You have the option to follow $\pi_1$ (the better policy) until the end of the episode, totalling $Q_t^{\pi_1}(x_t,\pi_1(x_t,t))$ return from the current state-timestep; or you have the option to follow $\pi_2$ for one timestep and then follow $\pi_1$ instead until the end of the episode (you can follow many other policies of course). This would you give you a ``loss'' of $Q_t^{\pi_1}(x_t,\pi_1(x_t,t)) - Q_t^{\pi_1}(x_t,\pi_2(x_t,t))$ that originates from following the worse policy $\pi_2$ instead of $\pi_1$ in that timestep. 
-% Then equation \ref{eq:1} 
+\textbf{Intuition:} The above expression can be interpreted in the following way. For concreteness, assume that $\pi_1$ is the better policy, i.e., achieving $V_1^{\pi_1}(x_1) \geq V_1^{\pi_2}(x_1)$. Suppose you're following policy $\pi_2$ and you are at timestep $t$ in state $x_t$.
+You have the option to follow $\pi_1$ (the better policy) until the end of the episode, totalling $Q_t^{\pi_1}(x_t,\pi_1(x_t,t))$ return from the current state-timestep; or you have the option to follow $\pi_2$ for one timestep and then follow $\pi_1$ instead until the end of the episode (you can follow many other policies of course). This would you give you a ``loss'' of $Q_t^{\pi_1}(x_t,\pi_1(x_t,t)) - Q_t^{\pi_1}(x_t,\pi_2(x_t,t))$ that originates from following the worse policy $\pi_2$ instead of $\pi_1$ in that timestep.
+% Then equation \ref{eq:1}
 Then the equation above
 means that the value difference of the two policies is the sum of all the losses induced by following the suboptimal policy for every timestep, weighted by the expected trajectory of the policy you're following.
+
+\textbf{Answer:}
+
+\begin{equation}
+\begin{split}
+V^{\pi_1}_{t}(x_t) - V^{\pi_2}_{t}(x_t) & = Q^{\pi_1}_{t}(x_t,\pi_1(x_t,t)) - Q^{\pi_2}_{t}(x_t, \pi_2(x_t,t)) \\
+& = Q^{\pi_1}_{t}(x_t,\pi_1(x_t,t)) - Q^{\pi_1}_{t}(x_t, \pi_2(x_t,t)) + Q^{\pi_1}_{t}(x_t, \pi_2(x_t,t)) - Q^{\pi_2}_{t}(x_t, \pi_2(x_t,t))
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+Q^{\pi_1}_{t}(x_t, \pi_2(x_t,t)) - Q^{\pi_2}_{t}(x_t, \pi_2(x_t,t)) & = r_t(x_t, \pi_2(x_t, t)) + {\mathbb E}_{s' \sim p(x_t, \pi_2(x_t, t))}V^{\pi_1}_{t+1}(s') \\
+& \quad - r_t(x_t, \pi_2(x_t, t)) - {\mathbb E}_{s' \sim p(x_t, \pi_2(x_t, t))}V^{\pi_2}_{t+1}(s') \\
+& = {\mathbb E}_{s' \sim p(x_t, \pi_2(x_t, t))}(V^{\pi_1}_{t+1}(s') - V^{\pi_2}_{t+1}(s'))
+\end{split}
+\end{equation}
+
+Plug back to previous formula:
+
+\begin{equation}
+\begin{split}
+V^{\pi_1}_{t}(x_t) - V^{\pi_2}_{t}(x_t) & = Q^{\pi_1}_{t}(x_t,\pi_1(x_t,t)) - Q^{\pi_1}_{t}(x_t, \pi_2(x_t,t)) + {\mathbb E}_{s' \sim p(x_t, \pi_2(x_t, t))}(V^{\pi_1}_{t+1}(s') - V^{\pi_2}_{t+1}(s'))
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+{\mathbb E}_{x_t \sim \pi_2}(V^{\pi_1}_{t}(x_t) - V^{\pi_2}_{t}(x_t)) & = {\mathbb E}_{x_t \sim \pi_2}(Q^{\pi_1}_{t}(x_t,\pi_1(x_t,t)) - Q^{\pi_1}_{t}(x_t, \pi_2(x_t,t))) + {\mathbb E}_{x_{t+1} \sim \pi_2}(V^{\pi_1}_{t+1}(x_{t+1}) - V^{\pi_2}_{t+1}(x_{t+1})) \\
+& = {\mathbb E}_{x_t \sim \pi_2}(Q^{\pi_1}_{t}(x_t,\pi_1(x_t,t)) - Q^{\pi_1}_{t}(x_t, \pi_2(x_t,t))) \\
+& \quad + \sum_{\tau=t+1}^H({\mathbb E}_{x_\tau \sim \pi_2}(Q_\tau^{\pi_1}(x_\tau, \pi_1(x_\tau, \tau)) - Q_\tau^{\pi_2}(x_\tau, \pi_2(x_\tau, \tau)))) \\
+& = \sum_{\tau=t}^H({\mathbb E}_{x_\tau \sim \pi_2}(Q_\tau^{\pi_1}(x_\tau, \pi_1(x_\tau, \tau)) - Q_\tau^{\pi_2}(x_\tau, \pi_2(x_\tau, \tau))))
+\end{split}
+\end{equation}
+
+By induction, above expression is true for any $1 \leq \tau \leq H$, this gives the thesis.
