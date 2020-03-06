@@ -14,17 +14,65 @@ for any two value functions $V'$ and $V''$, meaning if we apply it to two differ
 \begin{enumerate}[label=(\alph*)]
 \item (5pts) Prove by induction that $\|V_{n+1} - V_{n}\|_\infty \leq \gamma^n \|V_1 - V_0\|_\infty$
 
+\textbf{Answer:}
+\begin{equation}
+\begin{aligned}
+& n = 1: \\
+& \|V_2 - V_1\|_\infty = \|BV_1 - BV_0\|_\infty\leq \gamma^1
+\|V_1 - V_0\|_\infty \\
+& n = 2: \\
+& \|V_3 - V_2\|_\infty = \|BV_2 - BV_1\|_\infty\leq \gamma^1 \|V_2 - V_1\|_\infty \leq \gamma^1 \|V_1 - V_0\|_\infty \\
+& n = k, \text{assume:} \\
+& \|V_{k+1} - V_k\|_\infty \leq \gamma^1 \|V_1 - V_0\|_\infty \\
+& \|V_{k+2} - V_{k+1}\|_\infty = \|BV_{k+1} - BV_k\|_\infty \\
+& \leq \gamma^1\|V_{k+1} - V_k\|_\infty \leq \gamma^1 \gamma^k \|V_1 - V_0\|_\infty = \gamma^{k+1} \|V_1 - V_0\|_\infty \\
+& 0 < \gamma < 1, \text{by induction: } \|V_{n+1} - V_{n}\|_\infty \leq \gamma \|V' - V''\|_\infty
+\end{aligned}
+\end{equation}
+
 
 \item (10pts) Prove that for any $c>0$, $\|V_{n+c} - V_n\|_\infty \leq \frac{\gamma^n}{1-\gamma}\|V_1 - V_0\|_\infty$
 \end{enumerate}
 
+\textbf{Answer:}
+\begin{equation}
+\begin{aligned}
+\text{consider } c > 1: &\\
+\|V_{n+c} - V_n\|_\infty & = \|V_{n+c} - V_{n+1} + V_{n+1} - V_n\|_\infty \leq  \|V_{n+c} - V_{n+1}\|_\infty + \|V_{n+1} - V_n\|_\infty \\
+\|V_{n+c} - V_n\|_\infty  & \leq \sum_{k=n}^{n+c}  \|V_{k+1} - V_k\|_\infty \\
+                          & = \sum_{k=n}^{n+c} \gamma^k \|V_{1} - V_0\|_\infty \\
+                          & = \frac{\gamma^n - \gamma^{n+c}}{1-\gamma}\|V_{1} - V_0\|_\infty \\
+                          & \leq \frac{\gamma^n}{1-\gamma}\|V_{1} - V_0\|_\infty
+\end{aligned}
+\end{equation}
 
 A \emph{Cauchy sequence} is a sequence whose elements become arbitrarily close to each other as the sequence progresses. Formally a sequence $\{a_n\}$ in metric space $X$ with distance metric $d$ is a Cauchy sequence if given an $\epsilon > 0$ there exists k such that if m, n > k then $d(a_m, a_n) < \epsilon$. Real Cauchy sequences are convergent.
 \begin{enumerate}[label=(\alph*)]
 \setcounter{enumi}{2}
 \item (2pts) Using this information about Cauchy sequences, argue that the sequence $V_0, V_1, ...$ is a Cauchy sequence and is therefore convergent and must converge to some element $V$ and this V is a fixed point
 
-\item (8pts) Show that this fixed point is unique. 
+\textbf{Answer:}
+\begin{equation}
+\text{let } k < n, m = n + c, \epsilon = \frac{\gamma^k}{1-\gamma}\|V_{1} - V_0\|_\infty:
+\end{equation}
+\begin{equation}
+\begin{aligned}
+\|V_{m} - V_n\|_\infty  & \leq \frac{\gamma^n}{1-\gamma}\|V_{1} - V_0\|_\infty \\
+                          & < \frac{\gamma^k}{1-\gamma}\|V_{1} - V_0\|_\infty \\
+                          & = \epsilon
+\end{aligned}
+\end{equation}
 
+\item (8pts) Show that this fixed point is unique.
 
 \end{enumerate}
+
+Assume there are two fixed points $V$ and $V'$
+
+At those points, because of convergence: $BV = V$
+
+$\|V - V'\|_\infty = \|BV - BV'\|_\infty \leq \gamma \|V - V'\|_\infty$
+
+Because $ 0 < \gamma < 1$, so $\|V - V'\| = 0$
+
+Contraditon, there is only one fix point.

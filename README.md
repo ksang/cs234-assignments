@@ -15,12 +15,6 @@ Stanford CS234: Reinforcement Learning assignments and practices
 
 There are totally three assignments, each of them has programming part and written part.
 
-[Assignment 1 programming](/assignment1)
-
-- Frozen Lake MDP, policy evaluation, policy improvement, policy iteration, value iteration.
-
-- Details see source code: [vi_and_pi.py](/assignment1/vi_and_pi.py)
-
 [Assignment 1 written](/assignment1_written)
 
 - Grid World
@@ -28,6 +22,12 @@ There are totally three assignments, each of them has programming part and writt
 - Value of Different Policies
 
 - Fixed Point
+
+[Assignment 1 coding](/assignment1_coding)
+
+- Frozen Lake MDP, policy evaluation, policy improvement, policy iteration, value iteration.
+
+- Details see source code: [vi_and_pi.py](/assignment1/vi_and_pi.py)
 
 ### Notes on minimum LaTex environment installation on OSX
 
