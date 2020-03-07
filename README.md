@@ -29,6 +29,21 @@ There are totally three assignments, each of them has programming part and writt
 
 - Details see source code: [vi_and_pi.py](/assignment1/vi_and_pi.py)
 
+[Assignment 2 written](/assignment2_written)
+
+[Assignment 2 coding](/assignment2_coding)
+
+- Q-learning
+
+- Linear Approximation
+
+- Implementing DeepMind's DQN
+
+- DQN on Atari
+
+- n-step Estimators
+
+
 ### Notes on minimum LaTex environment installation on OSX
 
 - Install basic tex package
@@ -49,7 +64,8 @@ There are totally three assignments, each of them has programming part and writt
             sudo tlmgr install units fullpage preprint \
                                 wrapfig was apptools appendix \
                                 titlesec enumitem breakurl \
-                                algorithm2e ifoddpage relsize cm-super
+                                algorithm2e ifoddpage relsize cm-super \
+                                lastpage comment framed biblatex
 
 - Use your favorite editor with LaTeX support and enjoy the math. I'm using [Atom](https://atom.io/) with [LaTex](https://atom.io/packages/latex) and [pdf-view](https://atom.io/packages/pdf-view) package.
 

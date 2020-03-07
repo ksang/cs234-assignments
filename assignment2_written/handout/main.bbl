@@ -1,0 +1,136 @@
+% $ biblatex auxiliary file $
+% $ biblatex version 2.5 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\entry{mnih2015human}{article}{}
+  \true{moreauthor}
+  \name{author}{10}{}{%
+    {{}%
+     {Mnih}{M.}%
+     {Volodymyr}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kavukcuoglu}{K.}%
+     {Koray}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Silver}{S.}%
+     {David}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Rusu}{R.}%
+     {Andrei~A}{A.~A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Veness}{V.}%
+     {Joel}{J.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Bellemare}{B.}%
+     {Marc~G}{M.~G.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Graves}{G.}%
+     {Alex}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Riedmiller}{R.}%
+     {Martin}{M.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Fidjeland}{F.}%
+     {Andreas~K}{A.~K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Ostrovski}{O.}%
+     {Georg}{G.}%
+     {}{}%
+     {}{}}%
+  }
+  \list{publisher}{1}{%
+    {Nature Research}%
+  }
+  \strng{namehash}{MV+1}
+  \strng{fullhash}{MVKKSDRAAVJBMGGARMFAKOG+1}
+  \field{sortinit}{M}
+  \field{number}{7540}
+  \field{pages}{529\bibrangedash 533}
+  \field{title}{Human-level control through deep reinforcement learning}
+  \field{volume}{518}
+  \field{journaltitle}{Nature}
+  \field{year}{2015}
+\endentry
+
+\entry{mnih-atari-2013}{incollection}{}
+  \name{author}{7}{}{%
+    {{}%
+     {Mnih}{M.}%
+     {Volodymyr}{V.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Kavukcuoglu}{K.}%
+     {Koray}{K.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Silver}{S.}%
+     {David}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Graves}{G.}%
+     {Alex}{A.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Antonoglou}{A.}%
+     {Ioannis}{I.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Wierstra}{W.}%
+     {Daan}{D.}%
+     {}{}%
+     {}{}}%
+    {{}%
+     {Riedmiller}{R.}%
+     {Martin}{M.}%
+     {}{}%
+     {}{}}%
+  }
+  \strng{namehash}{MV+1}
+  \strng{fullhash}{MVKKSDGAAIWDRM1}
+  \field{sortinit}{M}
+  \field{booktitle}{NIPS Deep Learning Workshop}
+  \field{title}{Playing Atari With Deep Reinforcement Learning}
+  \field{year}{2013}
+\endentry
+
+\lossort
+\endlossort
+
+\endinput
