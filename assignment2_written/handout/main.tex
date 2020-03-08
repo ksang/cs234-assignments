@@ -185,6 +185,15 @@ $s_0 = 0, a_0=1, R_0 = -0.2, s_1=1, a_1=2, R_1 = 0, s_2=2, a_2=4, R_2 = 0, s_3=2
 \item (\textbf{written} 6 pts) What is the maximum sum of rewards that can be achieved in a single trajectory in the test environment, assuming $\gamma = 1$? Show first that this value is attainable in a single trajectory, and then briefly argue why no other trajectory can achieve greater cumulative reward.
 \end{enumerate}
 
+\textbf{Answer:}
+
+The maximum cumulative reward valut is: 4.1
+
+$ {(0, 2, 0.0), (2, 1, 2.0), (1, 2, 0.0), (2, 1, 2.0), (1, 0, 0.1)} $
+
+The maximun single step reward value we can get is (2, 1, 2.0), within 5 steps starting from state 0, we can only do this 2 times at maximum, and by doing this, we can get 4.0 reward.
+
+For the 1 or 2 steps left, we can only do (0, 2, ... , other) or (0, other, 2, ...) they could maximumly have same reward value 0.1
 
 \section{Q-Learning (24 pts)}\label{q-learn}
 
@@ -243,6 +252,15 @@ We will now examine these assumptions and implement the $\epsilon$-greedy strate
 \begin{enumerate}
 
 \item (\textbf{written} 3 pts) What is one benefit of representing the $Q$ function as $\hat{q}(s; \mathbf{w}) \in \mathbb{R}^{|\mathcal{A}|}$?
+
+\textbf{Answer:}
+
+This representation integrate $a \in |\mathcal{A}|$ into parameter $\mathbf{w}$.
+
+By doing this for each state we don't need to to try all the actions and get $\max_{a' \in \mathcal{A}}\hat{q}\left(s', a'; \mathbf{w} \right)$
+
+Instead for each state, we only need a single interaction.
+
 
 \item (\textbf{coding} 3 pts) Implement the \texttt{get\_action} and \texttt{update} functions in \texttt{q1\_schedule.py}. Test your implementation by running \texttt{python q1\_schedule.py}.
 \end{enumerate}
