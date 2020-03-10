@@ -277,7 +277,36 @@ Stochastic gradient descent has many desirable theoretical properties; in partic
 \setcounter{enumi}{2}
 \item (\textbf{written} 5 pts) Consider the first of these two extremes: standard Q-Learning without a target network, whose weight update is given by equation \textbf{(2)} above. Is this weight update an instance of stochastic gradient descent (up to a constant factor of 2) on the objective $L(\mathbf{w})$ given by equation \textbf{(3)}? Argue mathematically why or why not.
 
+\textbf{Answer:}
+
+No.
+Intuitively, if there is no target network, which means we update our approximator each time step, this is different from stochastic as it is for each independent episode.
+
+\[
+\nabla_{\mathbf{w}}l(s,a,r, s',\mathbf{w}) = 2 (r+\gamma \max_{a' \in \mathcal{A}}\hat{q}(s', a', \mathbf{w}) - \hat{q}(s, a,\mathbf{w}))\nabla_{\mathbf{w}}(r+\gamma \max_{a' \in \mathcal{A}}\hat{q}(s', a', \mathbf{w}) - \hat{q}(s, a,\mathbf{w}))
+\]
+
+Because \max_{a' \in \mathcal{A}}\hat{q}(s', a', \mathbf{w})$ depends on $\mathbf{w}$, so
+
+\[
+\nabla_{\mathbf{w}}(r+\gamma \max_{a' \in \mathcal{A}}\hat{q}(s', a', \mathbf{w}) - \hat{q}(s, a,\mathbf{w})) \neq \nabla_{\mathbf{w}}(- \hat{q}(s, a,\mathbf{w}))
+\]
+
+So updating above gradient is not the form of $\mathbf{w} \leftarrow \mathbf{w} - \alpha \nabla_{\mathbf{w}}l(s,a,r, s',\mathbf{w})$
+
+
 \item (\textbf{written} 5 pts) Now consider the second of these two extremes: using a target network that is never updated (i.e. held fixed throughout training). In this case, the weight update is given by equation \textbf{(4)} above, treating $\mathbf{w^-}$ as a constant. Is this weight update an instance of stochastic gradient descent (up to a constant factor of 2) on the objective $L^{-}(\mathbf{w})$ given by equation \textbf{(5)}? Argue mathematically why or why not.
+
+\textbf{Answer:}
+
+Yes.
+Similar process as above question.
+
+\[
+\nabla_{\mathbf{w}}(r+\gamma \max_{a' \in \mathcal{A}}\hat{q}(s', a', \mathbf{w^-}) - \hat{q}(s, a,\mathbf{w})) = \nabla_{\mathbf{w}}(- \hat{q}(s, a,\mathbf{w}))
+\]
+
+So updating above gradient is the form of $\mathbf{w} \leftarrow \mathbf{w} - \alpha \nabla_{\mathbf{w}}l(s,a,r, s',\mathbf{w})$
 
 \item (\textbf{written} 3 pts) An obvious downside to holding the target network fixed throughout training is that it depends on us knowing good weights for the target network \textit{a priori}; but if this was the case, we wouldn't need to be training a Q-network at all! In light of this, together with the discussion above regarding the convergence of stochastic gradient descent and your answers to the previous two parts, describe the fundamental tradeoff at play in determining a good choice of $C$.
 
