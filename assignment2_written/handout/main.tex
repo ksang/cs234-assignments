@@ -310,6 +310,10 @@ So updating above gradient is the form of $\mathbf{w} \leftarrow \mathbf{w} - \a
 
 \item (\textbf{written} 3 pts) An obvious downside to holding the target network fixed throughout training is that it depends on us knowing good weights for the target network \textit{a priori}; but if this was the case, we wouldn't need to be training a Q-network at all! In light of this, together with the discussion above regarding the convergence of stochastic gradient descent and your answers to the previous two parts, describe the fundamental tradeoff at play in determining a good choice of $C$.
 
+\textbf{Answer:}
+
+The two extreme cases have described two directions of the tradeoff here: smaller update step means quicker updates, and towards the direction of Q-learning, but the update direction is very correralated within current episode, resulting with high variance. Larger update step means slower for updates, towards the direction of SGD. We need to consider this as a hyperparameter and set a value in the middle.
+
 \item (\textbf{written}, 5 pts) In supervised learning, the goal is typically to minimize a predictive model's error on data sampled from some distribution.
 If we are solving a regression problem with a one-dimensional output, and we use mean-squared error to evaluate performance, the objective writes
 \[
@@ -319,6 +323,11 @@ where $\mathbf{x}$ is the input, $y$ is the output to be predicted from $\mathbf
 
 This objective looks very similar to the DQN objective stated above.
 How are these two scenarios different? Hint: how does this dataset $\mathcal{D}$ differ from the replay buffer $\mathcal{D}$ used above?
+
+\textbf{Answer:}
+
+The major difference is in supervised learning, the dataset is fixed and uncorrelated. But in reinforcement learning, for each state/action/reward are related within episode and determined by policy. Further, in DQN here, the target value is an estimated value, there is no ground truth value in supervised learning.
+
 \end{enumerate}
 
 
