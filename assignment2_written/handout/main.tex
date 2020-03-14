@@ -124,11 +124,11 @@ Please review any additional instructions posted on the assignment page. When yo
 follow the instructions on the course website. \textbf{Make sure you test your code using the
 provided commands and do not edit outside of the marked areas.}
 \\[1em]
-You'll need to download the starter code and fill the appropriate functions following the instructions from the handout and the code's documentation. Training DeepMind's network on \texttt{Pong} takes roughly \textbf{12 hours on GPU}, so \textbf{please start early}! (Only a completed run will recieve full credit) We will give you access to an Azure GPU cluster. You'll find the setup instructions on the course assignment page.
+You'll need to download the starter code and fill the appropriate functions following the instructions from the handout and the code's documentation. Training DeepMind's network on \text{Pong} takes roughly \textbf{12 hours on GPU}, so \textbf{please start early}! (Only a completed run will recieve full credit) We will give you access to an Azure GPU cluster. You'll find the setup instructions on the course assignment page.
 \end{framed}
 \section*{Introduction}
 
-In this assignment we will implement deep Q-learning, following DeepMind's paper (\cite{mnih2015human} and \cite{mnih-atari-2013}) that learns to play Atari games from raw pixels. The purpose is to demonstrate the effectiveness of deep neural networks as well as some of the techniques used in practice to stabilize training and achieve better performance. In the process, you'll become familiar with TensorFlow. We will train our networks on the \texttt{Pong-v0} environment from OpenAI gym, but the code can easily be applied to any other environment. \\
+In this assignment we will implement deep Q-learning, following DeepMind's paper (\cite{mnih2015human} and \cite{mnih-atari-2013}) that learns to play Atari games from raw pixels. The purpose is to demonstrate the effectiveness of deep neural networks as well as some of the techniques used in practice to stabilize training and achieve better performance. In the process, you'll become familiar with TensorFlow. We will train our networks on the \text{Pong-v0} environment from OpenAI gym, but the code can easily be applied to any other environment. \\
 
 In Pong, one player scores if the ball passes by the other player. An episode is over when one of the players reaches $21$ points. Thus, the total return of an episode is between $-21$ (lost every point) and $+21$ (won every point). Our agent plays against a decent hard-coded AI player. Average human performance is $-3$ (reported in \cite{mnih-atari-2013}). In this assignment, you will train an AI agent with super-human performance, reaching at least $+10$ (hopefully more!).
 
@@ -240,9 +240,9 @@ This means that with probability $\epsilon$, an action is chosen uniformly at ra
 
 There are several things to be noted:
 \begin{itemize}
-\item In this assignment, we will update $\mathbf{w}$ every \texttt{learning\_freq} steps by using a \texttt{minibatch} of experiences sampled from the replay buffer.
+\item In this assignment, we will update $\mathbf{w}$ every \text{learning\_freq} steps by using a \text{minibatch} of experiences sampled from the replay buffer.
 
-\item DeepMind's deep Q network takes as input the state $s$ and outputs a vector of size $|\mathcal{A}|$. In the \texttt{Pong} environment, we have $|\mathcal{A}| = 6$ actions, so $\hat{q}(s; \mathbf{w}) \in \mathbb{R}^{6}$.
+\item DeepMind's deep Q network takes as input the state $s$ and outputs a vector of size $|\mathcal{A}|$. In the \text{Pong} environment, we have $|\mathcal{A}| = 6$ actions, so $\hat{q}(s; \mathbf{w}) \in \mathbb{R}^{6}$.
 
 \item The input of the deep Q network is the concatenation $4$ consecutive steps, which results in an input after preprocessing of shape $(80 \times 80 \times 4)$.
 \end{itemize}
@@ -262,7 +262,7 @@ By doing this for each state we don't need to to try all the actions and get $\m
 Instead for each state, we only need a single interaction.
 
 
-\item (\textbf{coding} 3 pts) Implement the \texttt{get\_action} and \texttt{update} functions in \texttt{q1\_schedule.py}. Test your implementation by running \texttt{python q1\_schedule.py}.
+\item (\textbf{coding} 3 pts) Implement the \text{get\_action} and \text{update} functions in \text{q1\_schedule.py}. Test your implementation by running \text{python q1\_schedule.py}.
 \end{enumerate}
 
 We will now investigate some of the theoretical considerations involved in the tuning of the hyperparameter $C$ which determines the frequency with which the target network weights $\mathbf{w^-}$ are updated to match the Q-network weights $\mathbf{w}$. On one extreme, the target network could be updated \textit{every} time the Q-network is updated; it's straightforward to check that this reduces to not using a target network at all. On the other extreme, the target network could remain fixed throughout the entirety of training.\\
@@ -343,20 +343,41 @@ The major difference is in supervised learning, the dataset is fixed and uncorre
               \right.
   \]
 
+\textbf{Answer:}
+
+Denote $\delta(s,a)$ as $\mathbf{w}_{s,a}$, consider the $w_{s,a} = 1$ case, we can write equation 2 as:
+
+\[
+\mathbf{w}_{s,a} = \mathbf{w}_{s,a} + \alpha\left(r+\gamma \max_{a' \in \mathcal{A}}\mathbf{w}_{s',a'} - \mathbf{w}_{s,a}\right) \nabla_{\mathbf{w}} \mathbf{w}_{s,a}
+\]
+
+This is same as equation 1 to replace $\mathbf{w}_{s,a}$ with $Q(s,a)$
+
 \item (\textbf{written}, 3 pts) Assuming $\hat{q}(s, a; \mathbf{w})$ takes the form specified in the previous part, compute $\nabla_{\mathbf{w}} \hat{q}(s, a; \mathbf{w})$ and write the update rule for $\mathbf{w}$.
 
+\textbf{Answer:}
 
- \item (\textbf{coding}, 15 pts) We will now implement linear approximation in TensorFlow. This question will set up the pipeline for the remainder of the assignment. You'll need to implement the following functions in \texttt{q2\_linear.py} (please read through \texttt{q2\_linear.py}):
+\[
+ \nabla_{\mathbf{w}}( \hat{q}(s, a,\mathbf{w})) = \nabla_{\mathbf{w}}\mathbf{w}^\top \delta(s,a) = \delta(s,a)
+\]
+
+Update rule:
+
+\[
+\mathbf{w} = \mathbf{w} + \alpha\left(r+\gamma \max_{a' \in \mathcal{A}} \hat{q}\left(s', a'; \mathbf{w} \right) - \hat{q}\left(s, a; \mathbf{w} \right)\right) \delta(s,a)
+\]
+
+ \item (\textbf{coding}, 15 pts) We will now implement linear approximation in TensorFlow. This question will set up the pipeline for the remainder of the assignment. You'll need to implement the following functions in \text{q2\_linear.py} (please read through \text{q2\_linear.py}):
 \begin{itemize}
-	\item \texttt{add\_placeholders\_op}
-	\item \texttt{get\_q\_values\_op}
-	\item \texttt{add\_update\_target\_op}
-	\item \texttt{add\_loss\_op}
-	\item \texttt{add\_optimizer\_op}
+	\item \text{add\_placeholders\_op}
+	\item \text{get\_q\_values\_op}
+	\item \text{add\_update\_target\_op}
+	\item \text{add\_loss\_op}
+	\item \text{add\_optimizer\_op}
 \end{itemize}
-Test your code by running \texttt{python q2\_linear.py} \textbf{locally on CPU}.  This will run linear approximation with TensorFlow on the test environment from Problem 0.  Running this implementation should only take a minute or two.
+Test your code by running \text{python q2\_linear.py} \textbf{locally on CPU}.  This will run linear approximation with TensorFlow on the test environment from Problem 0.  Running this implementation should only take a minute or two.
 
- \item (\textbf{written}, 3 pts) Do you reach the optimal achievable reward on the test environment? Attach the plot \texttt{scores.png} from the directory \texttt{results/q2\_linear} to your writeup.
+ \item (\textbf{written}, 3 pts) Do you reach the optimal achievable reward on the test environment? Attach the plot \text{scores.png} from the directory \text{results/q2\_linear} to your writeup.
 
 \end{enumerate}
 
@@ -365,16 +386,16 @@ Test your code by running \texttt{python q2\_linear.py} \textbf{locally on CPU}.
 
 \begin{enumerate}
 
-\item (\textbf{coding}, 10 pts) Implement the deep Q-network as described in \cite{mnih2015human} by implementing \texttt{get\_q\_} \texttt{values\_op} in \texttt{q3\_nature.py}. The rest of the code inherits from what you wrote for linear approximation. Test your implementation \textbf{locally on CPU} on the test environment by running \texttt{python q3\_nature.py}.  Running this implementation should only take a minute or two.
+\item (\textbf{coding}, 10 pts) Implement the deep Q-network as described in \cite{mnih2015human} by implementing \text{get\_q\_} \text{values\_op} in \text{q3\_nature.py}. The rest of the code inherits from what you wrote for linear approximation. Test your implementation \textbf{locally on CPU} on the test environment by running \text{python q3\_nature.py}.  Running this implementation should only take a minute or two.
 
-\item (\textbf{written}, 3 pts) Attach the plot of scores, \texttt{scores.png}, from the directory \texttt{results/q3\_nature} to your writeup. Compare this model with linear approximation. How do the final performances compare? How about the training time?
+\item (\textbf{written}, 3 pts) Attach the plot of scores, \text{scores.png}, from the directory \text{results/q3\_nature} to your writeup. Compare this model with linear approximation. How do the final performances compare? How about the training time?
 \end{enumerate}
 
 \section{DQN on Atari (21 pts)}
 
 Reminder: Please remember to kill your VM instances when you are done using them!! \\
 
-The Atari environment from OpenAI gym returns observations (or original frames) of size $ (210 \times 160 \times 3) $, the last dimension corresponds to the RGB channels filled with values between $ 0 $ and $ 255 $ (\texttt{uint8}). Following DeepMind's paper \cite{mnih2015human}, we will apply some preprocessing to the observations:
+The Atari environment from OpenAI gym returns observations (or original frames) of size $ (210 \times 160 \times 3) $, the last dimension corresponds to the RGB channels filled with values between $ 0 $ and $ 255 $ (\text{uint8}). Following DeepMind's paper \cite{mnih2015human}, we will apply some preprocessing to the observations:
 \begin{myitemize}
 \item Single frame encoding: To encode a single frame, we take the maximum value for each pixel color value over the frame being encoded and the previous frame. In other words, we return a pixel-wise max-pooling of the last 2 observations.
 \item Dimensionality reduction: Convert the encoded frame to grey scale, and rescale it to $(80 \times 80 \times 1)$. (See Figure \ref{fig:pong_env})
@@ -396,26 +417,26 @@ The above preprocessing is applied to the 4 most recent observations and these e
   \caption{After preprocessing in grey scale of shape $ (80 \times 80 \times 1 ) $}
   \label{fig:pong_grey}
 \end{subfigure}
-\caption{\texttt{Pong-v0} environment}
+\caption{\text{Pong-v0} environment}
 \label{fig:pong_env}
 \end{figure}
 
 \begin{enumerate}
 
-\item (\textbf{coding and written}, 5 pts). Now we're ready to train on the Atari \texttt{Pong-v0} environment. First, launch linear approximation on pong with \texttt{python q4\_train\_atari\_linear.py} \textbf{on Azure's GPU}. This will train the model for 500,000 steps and should take approximately an hour.  Briefly qualitatively describe how your agent's performance changes over the course of training. Do you think that training for a larger number of steps would likely yield further improvements in performance? Explain your answer.
+\item (\textbf{coding and written}, 5 pts). Now we're ready to train on the Atari \text{Pong-v0} environment. First, launch linear approximation on pong with \text{python q4\_train\_atari\_linear.py} \textbf{on Azure's GPU}. This will train the model for 500,000 steps and should take approximately an hour.  Briefly qualitatively describe how your agent's performance changes over the course of training. Do you think that training for a larger number of steps would likely yield further improvements in performance? Explain your answer.
 
-\item (\textbf{coding and written}, 10 pts). In this question, we'll train the agent with DeepMind's architecture on the Atari \texttt{Pong-v0} environment. Run \texttt{python q5\_train\_atari\_nature.py} \textbf{on Azure's GPU}.  This will train the model for 5 million steps and should take around \textbf{12 hours}.  Attach the plot \texttt{scores.png} from the directory \texttt{results/q5\_train\_atari\_nature} to your writeup.
+\item (\textbf{coding and written}, 10 pts). In this question, we'll train the agent with DeepMind's architecture on the Atari \text{Pong-v0} environment. Run \text{python q5\_train\_atari\_nature.py} \textbf{on Azure's GPU}.  This will train the model for 5 million steps and should take around \textbf{12 hours}.  Attach the plot \text{scores.png} from the directory \text{results/q5\_train\_atari\_nature} to your writeup.
 You should get a score of around 13-15 after 5 million time steps.  As stated previously, the DeepMind paper claims average human performance is $ -3 $.
 
 
 As the training time is roughly 12 hours, you may want to check after a few epochs that your network is making progress.  The following are some training tips:
 
 \begin{myitemize}
-\item If you terminate your terminal session, the training will stop.  In order to avoid this, you should use \texttt{screen} to run your training in the background.
+\item If you terminate your terminal session, the training will stop.  In order to avoid this, you should use \text{screen} to run your training in the background.
 \item The evaluation score printed on terminal should start at -21 and increase.
 \item The max of the q values should also be increasing.
 \item The standard deviation of q shouldn't be too small. Otherwise it means that all states have similar q values.
-\item You may want to use Tensorboard to track the history of the printed metrics. You can monitor your training with Tensorboard by typing the command \texttt{tensorboard --logdir=results} and then connecting to \texttt{ip-of-you-machine:6006}.  Below are our Tensorboard graphs from one training session:
+\item You may want to use Tensorboard to track the history of the printed metrics. You can monitor your training with Tensorboard by typing the command \text{tensorboard --logdir=results} and then connecting to \text{ip-of-you-machine:6006}.  Below are our Tensorboard graphs from one training session:
 \end{myitemize}
 
 \begin{figure}[H]
