@@ -21,7 +21,7 @@ class NatureQN(Linear):
         Returns Q values for all actions
 
         Args:
-            state: (tf tensor) 
+            state: (tf tensor)
                 shape = (batch_size, img height, img width, nchannels)
             scope: (string) scope name, that specifies if target network or not
             reuse: (bool) reuse of variables in the scope
@@ -38,12 +38,12 @@ class NatureQN(Linear):
                 https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
                 https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf
 
-              you may find the section "model architecture" of the appendix of the 
+              you may find the section "model architecture" of the appendix of the
               nature paper particulary useful.
 
               store your result in out of shape = (batch_size, num_actions)
 
-        HINT: 
+        HINT:
             - You may find the following functions useful:
                 - tf.layers.conv2d
                 - tf.layers.flatten
@@ -53,10 +53,14 @@ class NatureQN(Linear):
 
         """
         ##############################################################
-        ################ YOUR CODE HERE - 10-15 lines ################ 
+        ################ YOUR CODE HERE - 10-15 lines ################
 
-        pass
-
+        with tf.variable_scope(scope):
+            a1 = tf.layers.conv2d(inputs=state, filters=16, kernel_size=8, strides=4, activation=tf.nn.relu)
+            a2 = tf.layers.conv2d(inputs=a1, filters=32, kernel_size=4, strides=2, activation=tf.nn.relu)
+            x3 = tf.layers.flatten(a2)
+            a3 = tf.layers.dense(inputs=x3, units=256, activation=tf.nn.relu)
+            out = tf.layers.dense(inputs=a3, units=num_actions)
         ##############################################################
         ######################## END YOUR CODE #######################
         return out
@@ -69,7 +73,7 @@ if __name__ == '__main__':
     env = EnvTest((80, 80, 1))
 
     # exploration strategy
-    exp_schedule = LinearExploration(env, config.eps_begin, 
+    exp_schedule = LinearExploration(env, config.eps_begin,
             config.eps_end, config.eps_nsteps)
 
     # learning rate schedule

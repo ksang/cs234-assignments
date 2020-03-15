@@ -134,3 +134,6 @@ dmypy.json
 *.out
 *.synctex.gz
 *cache.yaml
+
+# Results
+results
