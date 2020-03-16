@@ -463,6 +463,10 @@ As the training time is roughly 12 hours, you may want to check after a few epoc
 \item (\textbf{written}, 3 pts) Will the performance of DQN over time always improve monotonically? Why or why not?
 \end{enumerate}
 
+\textbf{Answer:}
+
+No, performance of DQN is not ganranteed to be monotonically improved. Because 1. it is off-policy learning 2. it uses $\epsilon-greedy$ exploration.
+
 \section{$n$-step Estimators (12 pts)}
 We can further understand the effects of using a bootstrapping target by adopting a statistical perspective. As seen in class, the Monte Carlo (MC) target is an unbiased estimator\footnote{Recall that the bias of an estimator is equal to the difference between the expected value of the estimator and the quantity which it is estimating. An estimator is unbiased if its bias is zero.} of the true state-action value, but it suffers from high variance. On the other hand, temporal difference (TD) targets are biased due to their dependence on the current value estimate, but they have relatively lower variance.
 
