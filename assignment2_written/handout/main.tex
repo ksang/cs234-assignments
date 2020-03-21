@@ -465,7 +465,7 @@ As the training time is roughly 12 hours, you may want to check after a few epoc
 
 \textbf{Answer:}
 
-No, performance of DQN is not ganranteed to be monotonically improved. Because 1. it is off-policy learning 2. it uses $\epsilon-greedy$ exploration.
+No, performance of DQN is not ganranteed to be monotonically improved. Because 1. it is off-policy learning 2. it uses $\epsilon-greedy$ for exploration.
 
 \section{$n$-step Estimators (12 pts)}
 We can further understand the effects of using a bootstrapping target by adopting a statistical perspective. As seen in class, the Monte Carlo (MC) target is an unbiased estimator\footnote{Recall that the bias of an estimator is equal to the difference between the expected value of the estimator and the quantity which it is estimating. An estimator is unbiased if its bias is zero.} of the true state-action value, but it suffers from high variance. On the other hand, temporal difference (TD) targets are biased due to their dependence on the current value estimate, but they have relatively lower variance.
@@ -484,5 +484,40 @@ Given that the $n$-step SARSA target depends on fewer sample rewards than the MC
 \end{enumerate}
 
 \printbibliography
+
+\textbf{Answer:}
+
+By intuation, taking more steps with discounted factor $\gamma < 1$ will decrese bias because the bias on different directions will be canceled by each other in a discounted and converged way.
+
+With the assumptions above, let's denote $b$ as the uniform bias across the state-action space.
+
+For one step SARSA:
+\[
+\begin{split}
+Bias(r_t+\gamma\hat{q}(s_{t+1},a_{t+1})) & = \mathbb{E}_{r_t,s_{t+1},a_{t+1}}[r_t+\gamma\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - Q^\pi(s_t,a_t) \\
+                                         & = \mathbb{E}_{r_t,s_{t+1},a_{t+1}}[r_t+\gamma\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - \mathbb{E}_{r_i}[\sum_{i=t}^{\infty}\gamma^{i-t}r_i|s_t,a_t] \\
+                                         & = \mathbb{E}_{r_t}[r_t|s_t,a_t] + \gamma\mathbb{E}_{s_{t+1},a_{t+1}}[\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - \mathbb{E}_{r_t}[r_t|s_t,a_t] - \mathbb{E}_{r_i}[\sum_{i=t+1}^{\infty}\gamma^{i-t}r_i|s_t,a_t] \\
+                                         & = \gamma\mathbb{E}_{s_{t+1},a_{t+1}}[\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - \mathbb{E}_{r_i}[\sum_{i=t+1}^{\infty}\gamma^{i-t}r_i|s_t,a_t] \\
+                                         & = \gamma(\mathbb{E}_{s_{t+1},a_{t+1}}[\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - \mathbb{E}_{r_i}[\sum_{i=t+1}^{\infty}\gamma^{i-t-1}r_i|s_t,a_t]) \\
+                                         & = \gamma(\mathbb{E}_{s_{t+1},a_{t+1}}[\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - \mathbb{E}_{s_{t+1},a_{t+1}}(\mathbb{E}_{r_i}[\sum_{i=t+1}^{\infty}\gamma^{i-t-1}r_i|s_{t+1},a_{t+1}]|s_t,a_t)) \\
+& = \gamma(\mathbb{E}_{s_{t+1},a_{t+1}}[\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - \mathbb{E}_{s_{t+1},a_{t+1}}(Q^\pi(s_{t+1},a_{t+1})|s_t,a_t)) \\
+& = \gamma\mathbb{E}_{s_{t+1},a_{t+1}}(\hat{q}(s_{t+1},a_{t+1})|s_t,a_t] - Q^\pi(s_{t+1},a_{t+1})|s_t,a_t))\\
+& = \gamma b
+\end{split}
+\]
+
+For n step estimator:
+
+\[
+\begin{split}
+& Bias(r_t+...+\gamma^{n-1}r_{t+n-1}+\gamma^n\hat{q}(s_{t+n},a_{t+n})) \\
+& = \mathbb{E}[r_t+...+\gamma^{n-1}r_{t+n-1}+\gamma^n\hat{q}(s_{t+n},a_{t+n})|s_t,a_t] - \mathbb{E}[\sum_{i=t+1}^{\infty}\gamma^{i-t}r_i|s_t,a_t] \\
+& = \mathbb{E}[r_t+...+\gamma^{n-1}r_{t+n-1}|s_t,a_t] + \mathbb{E}[\gamma^n\hat{q}(s_{t+n},a_{t+n})|s_t,a_t] - \mathbb{E}[r_t+...+\gamma^{n-1}r_{t+n-1}|s_t,a_t] - \mathbb{E}[\sum_{i=t+n}^{\infty}\gamma^{i-t}r_i|s_t,a_t] \\
+& = \gamma^n\mathbb{E}(\hat{q}(s_{t+n},a_{t+n}) - \sum_{i=t+n}^{\infty}\gamma^{i-t-n}r_i|s_t,a_t) \\
+& = \gamma^n\mathbb{E}(\hat{q}(s_{t+n},a_{t+n}) - Q^\pi(s_{t+n},a_{t+n})|s_t,a_t) \\
+& = \gamma^nb \\
+& < \gamma b
+\end{split}
+\] 
 
 \end{document}
