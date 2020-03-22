@@ -43,6 +43,14 @@ There are totally three assignments, each of them has programming part and writt
 
 - n-step Estimators
 
+[Assignment 3 written](/assignment3_written)
+
+[Assignment 3 coding](/assignment3_coding)
+
+- Policy Gradient Methods
+
+- Best Arm Identification in Multi-armed Bandit
+
 
 ### Notes on minimum LaTex environment installation on OSX
 
@@ -65,7 +73,8 @@ There are totally three assignments, each of them has programming part and writt
                                 wrapfig was apptools appendix \
                                 titlesec enumitem breakurl \
                                 algorithm2e ifoddpage relsize cm-super \
-                                lastpage comment framed biblatex typewriter
+                                lastpage comment framed biblatex typewriter \
+                                tcolorbox environ trimspaces
 
 - Use your favorite editor with LaTeX support and enjoy the math. I'm using [Atom](https://atom.io/) with [LaTex](https://atom.io/packages/latex) and [pdf-view](https://atom.io/packages/pdf-view) package.
 

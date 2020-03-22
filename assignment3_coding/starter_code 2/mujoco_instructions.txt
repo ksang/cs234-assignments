@@ -1,0 +1,30 @@
+Instructions to get the MujoCo License:
+
+Go to restricted link to get the MujoCo License. 
+https://web.stanford.edu/class/cs234/restricted/mjkey.txt
+
+Download this file as mjkey.txt. 
+
+Follow the installation instructions to install MujoCo
+Download mujoco131 for your OS from https://www.roboti.us/index.html. Be sure to download version 131. 
+
+Make sure to download and install the right Mujoco version for your Operating System. 
+
+(Mac users please use mjpro131_osx, Windows users should use either mjpro131_win64 or mjpro131_win32 depending upon if your system is 64 bit or 32 bit version respectively, Linux users install mjpro131_linux)
+
+Make a directory ~/.mujoco, and 
+Unzip the downloaded file into ~/.mujoco/mjpro131
+Place the license key mjkey.txt at ~/.mujoco/mjkey.txt
+
+Finally, install mujoco-py:
+
+$ pip install mujoco-py==0.5.7
+
+and you should be ready to go!
+
+More detailed instructions for installing mujoco-py:
+mujoco-py instructions:
+https://github.com/openai/mujoco-py
+
+
+
