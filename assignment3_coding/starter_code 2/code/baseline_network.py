@@ -1,4 +1,5 @@
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import numpy as np
 import pdb
 from network_utils import build_mlp
@@ -11,9 +12,9 @@ class BaselineNetwork(object):
     self.config = config
     self.env = env
     self.observation_placeholder = observation_placeholder
-    
+
     self.add_baseline_placeholder()
-    
+
     self.baseline = None
     self.lr = self.config.learning_rate
 
@@ -23,7 +24,7 @@ class BaselineNetwork(object):
 
   def set_session(self, session):
     self.sess = session
-    
+
   def add_baseline_op(self, scope = "baseline"):
     """
     Build the baseline network within the scope.
@@ -49,7 +50,7 @@ class BaselineNetwork(object):
     """
     ######################################################
     #########   YOUR CODE HERE - 4-8 lines.   ############
-    
+
     # TODO
     #######################################################
     #########          END YOUR CODE.          ############
@@ -66,7 +67,7 @@ class BaselineNetwork(object):
             adv: Advantage
 
     Calculate the advantages, using baseline adjustment
-    
+
     TODO:
     We need to evaluate the baseline and subtract it from the returns to get the advantage.
     HINT: evaluate the self.baseline with self.sess.run(...)
@@ -74,11 +75,11 @@ class BaselineNetwork(object):
     """
     #######################################################
     #########   YOUR CODE HERE - 1-4 lines.   ############
-      
+
     #######################################################
     #########          END YOUR CODE.          ############
     return adv
-  
+
   def update_baseline(self, returns, observations):
     """
     Update the baseline from given returns and observation.
@@ -92,7 +93,7 @@ class BaselineNetwork(object):
     """
     #######################################################
     #########   YOUR CODE HERE - 1-5 lines.   ############
-    
+
     # TODO
     #######################################################
     #########          END YOUR CODE.          ############

@@ -4,12 +4,13 @@ from code.baseline_network import BaselineNetwork
 from code.policy_network import PG, build_mlp
 from code.config import get_config
 import gym
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import numpy as np
 import builtins
 
 # Suppress unnecessary logging
-gym.logging.disable(gym.logging.FATAL)
+# gym.logging.disable(gym.logging.FATAL)
 builtins.config = None
 
 class TestBasic(unittest.TestCase):

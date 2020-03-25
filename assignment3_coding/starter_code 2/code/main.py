@@ -6,7 +6,8 @@ import sys
 import logging
 import time
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import gym
 import scipy.signal
 import os

@@ -3,7 +3,8 @@ import sys
 import logging
 import time
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import gym
 import scipy.signal
 import os
@@ -53,7 +54,7 @@ class PG(object):
     self.action_dim = self.env.action_space.n if self.discrete else self.env.action_space.shape[0]
 
     self.lr = self.config.learning_rate
-    
+
     # build model
     self.build()
 
@@ -70,8 +71,14 @@ class PG(object):
     """
     #######################################################
     #########   YOUR CODE HERE - 4-6 lines.   ############
-    
-    # TODO
+
+    actions_type = tf.float32
+    if gym.spaces.Discrete:
+        actions_type = tf.uint32
+    self.observation_placeholder = tf.placeholder(tf.float32, (self.observation_dim))
+    self.action_placeholder = tf.placeholder(actions_type, (self.action_dim))
+    self.advantage_placeholder = tf.placeholder(tf.float32, (self.observation_dim))
+
     #######################################################
     #########          END YOUR CODE.          ############
 
@@ -119,13 +126,23 @@ class PG(object):
         self.sampled_action: sample from the gaussian distribution as described above
             HINT: use tf.random_normal
             HINT: use re-parametrization to obtain N(mu, sigma) from N(0, 1)
-        self.lobprob: the log probabilities of the taken actions
+        self.logprob: the log probabilities of the taken actions
             HINT: use tf.contrib.distributions.MultivariateNormalDiag
 
     """
     #######################################################
     #########   YOUR CODE HERE - 8-12 lines.   ############
 
+    with tf.variable_scope(scope):
+        if self.discrete:
+            action_logits = build_mlp(self.observation_placeholder,
+                                        self.action_dim,
+                                        scope,
+                                        self.config.n_layers,
+                                        self.config.layer_size)
+            self.sampled_action = tf.squeeze(tf.multinomial(action_logits, 1))
+        else:
+            pass
     #######################################################
     #########          END YOUR CODE.          ############
 
@@ -140,14 +157,14 @@ class PG(object):
     for you).
 
     You only have to reference fields of 'self' that have already
-    been set in the previous methods. 
+    been set in the previous methods.
     Save the loss as self.loss
 
     """
 
     ######################################################
     #########   YOUR CODE HERE - 1-2 lines.   ############
-    
+
     # TODO
     #######################################################
     #########          END YOUR CODE.          ############
@@ -159,7 +176,7 @@ class PG(object):
     """
     ######################################################
     #########   YOUR CODE HERE - 1-2 lines.   ############
-    
+
     # TODO
     #######################################################
     #########          END YOUR CODE.          ############
@@ -199,7 +216,7 @@ class PG(object):
 
     # create tf session
     self.sess = tf.Session()
-    
+
     # tensorboard stuff
     self.add_summary()
     # initiliaze all variables
@@ -302,7 +319,7 @@ class PG(object):
     episode_rewards = []
     paths = []
     t = 0
-    
+
     while (num_episodes or t < self.config.batch_size):
       state = env.reset()
       states, actions, rewards = [], [], []
@@ -361,7 +378,7 @@ class PG(object):
       rewards = path["reward"]
       #######################################################
       #########   YOUR CODE HERE - 5-10 lines.   ############
-      
+
       #######################################################
       #########          END YOUR CODE.          ############
       all_returns.append(returns)
@@ -379,14 +396,14 @@ class PG(object):
             adv: Normalized Advantage
 
     Calculate the advantages, by normalizing the advantages.
-    
+
     TODO:
     Normalize the advantages so that they have a mean of 0 and standard deviation of 1.
     """
     #######################################################
     #########   YOUR CODE HERE - 1-5 lines.   ############
 
-    
+
     #######################################################
     #########          END YOUR CODE.          ############
     return advantages

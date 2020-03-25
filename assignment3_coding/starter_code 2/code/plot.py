@@ -5,7 +5,8 @@ import numpy as np
 import scipy.stats as stats
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 SCALARS = {'Max_Reward', 'Avg_Reward', 'Std_Reward', 'Eval_Reward'}
 
@@ -22,28 +23,28 @@ def load_single_file(path):
             else:
                 print(f'WARNING! Unknown tag {value.tag} found in file {path}')
     return results
-    
+
 def group_by_scalar(results):
     return {scalar: np.array([run_results[scalar] for run_results in results]) for scalar in SCALARS}
-    
+
 def plot_combined(scalar_results):
     points = defaultdict(list)
     for run_results in scalar_results:
         for step, value in run_results:
             points[step].append(value)
-    
+
     xs = sorted(points.keys())
     values = np.array([points[x] for x in xs])
     ys = np.mean(values, axis=1)
     yerrs = stats.sem(values, axis=1)
     plt.fill_between(xs, ys - yerrs, ys + yerrs, alpha=0.25)
     plt.plot(xs, ys)
-    
+
 def plot_individually(run_results):
     xs = [step for step, value in run_results]
     ys = [value for step, value in run_results]
     plt.plot(xs, ys)
-        
+
 def plot(results_list, names, title, combine, plots_dir):
     plt.figure()
     plt.title(title)
@@ -64,11 +65,11 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--directory', required=True, help='Directory containing TensorFlow event files')
     parser.add_argument('--env', required=True, help='Name of environment')
     args = parser.parse_args()
-    
+
     directory = Path(args.directory)
     if not directory.is_dir():
         early_exit(f'Given path ({directory.resolve()}) is not a directory')
-    
+
     baseline_results = []
     no_baseline_results = []
     all_results = []
@@ -93,11 +94,11 @@ if __name__ == '__main__':
 
     plots_dir = directory / f'plots-{args.env}'
     plots_dir.mkdir(exist_ok=True)
-    
+
     baseline_by_scalar = group_by_scalar(baseline_results)
     no_baseline_by_scalar = group_by_scalar(no_baseline_results)
     all_by_scalar = group_by_scalar(all_results)
-    
+
     for scalar in SCALARS:
         plot([baseline_by_scalar[scalar], no_baseline_by_scalar[scalar]], ['Baseline', 'No baseline'], scalar, True, plots_dir)
         plot(all_by_scalar[scalar], all_names, scalar, False, plots_dir)
