@@ -1,4 +1,5 @@
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 def build_mlp(
           mlp_input,
@@ -36,11 +37,8 @@ def build_mlp(
   with tf.variable_scope(scope):
       h = tf.layers.flatten(mlp_input)
       for i in range(n_layers-1):
-          h = tf.layers.dense(h, size)
-      out = tf.layers.dense(h, output_size)
-
-      if output_activation != None:
-          out = output_activation(out)
+          h = tf.layers.dense(h, size, activation=output_activation)
+      out = tf.layers.dense(h, output_size, activation=output_activation)
 
   return out
   #######################################################

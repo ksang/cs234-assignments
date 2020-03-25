@@ -5,6 +5,7 @@ import time
 import numpy as np
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
+import tensorflow_probability as tfp
 import gym
 import scipy.signal
 import os
@@ -72,11 +73,11 @@ class PG(object):
     #######################################################
     #########   YOUR CODE HERE - 4-6 lines.   ############
 
-    actions_type = tf.float32
+    self.observation_placeholder = tf.placeholder(tf.float32, (None, self.observation_dim))
     if gym.spaces.Discrete:
-        actions_type = tf.uint32
-    self.observation_placeholder = tf.placeholder(tf.float32, (self.observation_dim))
-    self.action_placeholder = tf.placeholder(actions_type, (self.action_dim))
+        self.action_placeholder = tf.placeholder(tf.int32, (None, ))
+    else:
+        self.action_placeholder = tf.placeholder(tf.float32, (None, self.action_dim))
     self.advantage_placeholder = tf.placeholder(tf.float32, (self.observation_dim))
 
     #######################################################
@@ -136,13 +137,24 @@ class PG(object):
     with tf.variable_scope(scope):
         if self.discrete:
             action_logits = build_mlp(self.observation_placeholder,
-                                        self.action_dim,
-                                        scope,
-                                        self.config.n_layers,
-                                        self.config.layer_size)
+                                      self.action_dim,
+                                      scope,
+                                      self.config.n_layers,
+                                      self.config.layer_size,
+                                      self.config.activation)
             self.sampled_action = tf.squeeze(tf.multinomial(action_logits, 1))
+            self.logprob = - tf.nn.sparse_softmax_cross_entropy_with_logits(labels=self.action_placeholder,
+                                                                            logits=action_logits)
         else:
-            pass
+            action_means = build_mlp(self.observation_placeholder,
+                                      self.action_dim,
+                                      scope,
+                                      self.config.n_layers,
+                                      self.config.layer_size,
+                                      self.config.activation)
+            log_std = tf.get_variable("log_std", shape=(1, self.action_dim))
+            self.sampled_action = tf.random_normal((1,), mean=action_means, stddev=log_std)
+            self.logprob = tfp.distributions.MultivariateNormalDiag(action_means, log_std)
     #######################################################
     #########          END YOUR CODE.          ############
 
