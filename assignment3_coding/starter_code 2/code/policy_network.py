@@ -134,6 +134,7 @@ class PG(object):
     #######################################################
     #########   YOUR CODE HERE - 8-12 lines.   ############
 
+    # logprob: log π_θ(a_t|s_t)
     with tf.variable_scope(scope):
         if self.discrete:
             action_logits = build_mlp(self.observation_placeholder,
@@ -155,6 +156,7 @@ class PG(object):
             log_std = tf.get_variable("log_std", shape=(1, self.action_dim))
             self.sampled_action = tf.random_normal((1,), mean=action_means, stddev=log_std)
             self.logprob = tfp.distributions.MultivariateNormalDiag(action_means, log_std)
+
     #######################################################
     #########          END YOUR CODE.          ############
 
@@ -177,7 +179,8 @@ class PG(object):
     ######################################################
     #########   YOUR CODE HERE - 1-2 lines.   ############
 
-    # TODO
+    self.loss = tf.reduce_sum(-self.logprob * self.advantage_placeholder)
+
     #######################################################
     #########          END YOUR CODE.          ############
 
@@ -189,7 +192,9 @@ class PG(object):
     ######################################################
     #########   YOUR CODE HERE - 1-2 lines.   ############
 
-    # TODO
+    optimizer = tf.train.AdamOptimizer(learning_rate=self.lr)
+    self.train_op = optimizer.minimize(self.loss)
+
     #######################################################
     #########          END YOUR CODE.          ############
 
@@ -391,6 +396,10 @@ class PG(object):
       #######################################################
       #########   YOUR CODE HERE - 5-10 lines.   ############
 
+      returns = np.copy(rewards)
+      for t in reversed(range(len(rewards)-1)):
+          returns[t] = rewards[t] + self.config.gamma * rewards[t+1]
+
       #######################################################
       #########          END YOUR CODE.          ############
       all_returns.append(returns)
@@ -415,6 +424,7 @@ class PG(object):
     #######################################################
     #########   YOUR CODE HERE - 1-5 lines.   ############
 
+    advantages = (advantages - np.mean(advantages)) / np.std(advantages)
 
     #######################################################
     #########          END YOUR CODE.          ############
