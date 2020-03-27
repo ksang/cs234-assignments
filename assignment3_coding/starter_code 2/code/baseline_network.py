@@ -51,7 +51,17 @@ class BaselineNetwork(object):
     ######################################################
     #########   YOUR CODE HERE - 4-8 lines.   ############
 
-    # TODO
+    with tf.variable_scope(scope):
+        self.baseline = build_mlp(self.observation_placeholder,
+                                  1,
+                                  scope,
+                                  self.config.n_layers,
+                                  self.config.layer_size,
+                                  self.config.activation)
+        loss = tf.losses.mean_squared_error(self.baseline_target_placeholder, tf.squeeze(self.baseline))
+        optimizer = tf.train.AdamOptimizer(learning_rate=self.lr)
+        self.update_baseline_op = optimizer.minimize(loss)
+
     #######################################################
     #########          END YOUR CODE.          ############
 
