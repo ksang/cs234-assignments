@@ -78,7 +78,7 @@ class PG(object):
         self.action_placeholder = tf.placeholder(tf.int32, (None, ))
     else:
         self.action_placeholder = tf.placeholder(tf.float32, (None, self.action_dim))
-    self.advantage_placeholder = tf.placeholder(tf.float32, (self.observation_dim))
+    self.advantage_placeholder = tf.placeholder(tf.float32, (None, ))
 
     #######################################################
     #########          END YOUR CODE.          ############
@@ -135,27 +135,26 @@ class PG(object):
     #########   YOUR CODE HERE - 8-12 lines.   ############
 
     # logprob: log π_θ(a_t|s_t)
-    with tf.variable_scope(scope):
-        if self.discrete:
-            action_logits = build_mlp(self.observation_placeholder,
-                                      self.action_dim,
-                                      scope,
-                                      self.config.n_layers,
-                                      self.config.layer_size,
-                                      self.config.activation)
-            self.sampled_action = tf.squeeze(tf.multinomial(action_logits, 1))
-            self.logprob = - tf.nn.sparse_softmax_cross_entropy_with_logits(labels=self.action_placeholder,
-                                                                            logits=action_logits)
-        else:
-            action_means = build_mlp(self.observation_placeholder,
-                                      self.action_dim,
-                                      scope,
-                                      self.config.n_layers,
-                                      self.config.layer_size,
-                                      self.config.activation)
-            log_std = tf.get_variable("log_std", shape=(1, self.action_dim))
-            self.sampled_action = tf.random_normal((1,), mean=action_means, stddev=log_std)
-            self.logprob = tfp.distributions.MultivariateNormalDiag(action_means, log_std)
+    if self.discrete:
+        action_logits = build_mlp(self.observation_placeholder,
+                                  self.action_dim,
+                                  scope,
+                                  self.config.n_layers,
+                                  self.config.layer_size,
+                                  self.config.activation)
+        self.sampled_action = tf.squeeze(tf.multinomial(action_logits, 1))
+        self.logprob = - tf.nn.sparse_softmax_cross_entropy_with_logits(labels=self.action_placeholder,
+                                                                        logits=action_logits)
+    else:
+        action_means = build_mlp(self.observation_placeholder,
+                                  self.action_dim,
+                                  scope,
+                                  self.config.n_layers,
+                                  self.config.layer_size,
+                                  self.config.activation)
+        log_std = tf.get_variable("log_std", shape=(1, self.action_dim))
+        self.sampled_action = tf.random_normal((1,), mean=action_means, stddev=log_std)
+        self.logprob = tfp.distributions.MultivariateNormalDiag(action_means, log_std)
 
     #######################################################
     #########          END YOUR CODE.          ############
@@ -179,7 +178,7 @@ class PG(object):
     ######################################################
     #########   YOUR CODE HERE - 1-2 lines.   ############
 
-    self.loss = tf.reduce_sum(-self.logprob * self.advantage_placeholder)
+    self.loss = tf.reduce_sum(self.logprob * self.advantage_placeholder)
 
     #######################################################
     #########          END YOUR CODE.          ############
@@ -344,7 +343,7 @@ class PG(object):
 
       for step in range(self.config.max_ep_len):
         states.append(state)
-        action = self.sess.run(self.sampled_action, feed_dict={self.observation_placeholder : states[-1][None]})[0]
+        action = self.sess.run(self.sampled_action, feed_dict={self.observation_placeholder : states[-1][None]})
         state, reward, done, info = env.step(action)
         actions.append(action)
         rewards.append(reward)

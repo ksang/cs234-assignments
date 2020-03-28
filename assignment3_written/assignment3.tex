@@ -145,7 +145,7 @@ follow the instructions on the course website.
 
 
 \section{Policy Gradient Methods (50 pts coding + 15 pts writeup)}
-The goal of this problem is to experiment with policy gradient and its variants, including variance reduction methods. Your goals will be to set up policy gradient for both continuous and discrete environments, and implement a neural network baseline for variance reduction. The framework for the policy gradient algorithm is setup in \texttt{main.py}, and everything that you need to implement is in the files \texttt{network-utils.py}, \texttt{policy-network.py} and \texttt{baseline-network.py}. The file has detailed instructions for each implementation task, but an overview of key steps in the algorithm is provided here.
+The goal of this problem is to experiment with policy gradient and its variants, including variance reduction methods. Your goals will be to set up policy gradient for both continuous and discrete environments, and implement a neural network baseline for variance reduction. The framework for the policy gradient algorithm is setup in \text{main.py}, and everything that you need to implement is in the files \text{network-utils.py}, \text{policy-network.py} and \text{baseline-network.py}. The file has detailed instructions for each implementation task, but an overview of key steps in the algorithm is provided here.
 \subsection{REINFORCE}
 Recall the policy gradient theorem,
 \[ \nabla_\theta J(\theta) = \mathbb E_{\pi_\theta} \left[ \nabla_\theta \log\pi_\theta(a|s) Q^{\pi_\theta} (s,a) \right] \]
@@ -172,16 +172,16 @@ A second variance reduction technique is to normalize the computed advantages, $
 \subsection{Coding Questions (50 pts)}
 The functions that you need to implement in \textbf{network-utils.py}, \textbf{policy-network.py} and \textbf{baseline-network.py} are enumerated here. Detailed instructions for each function can be found in the comments in each of these files.
 \begin{itemize}
-\item\texttt{build\_mlp} in network-utils.py
-\item\texttt{add\_placeholders\_op} in policy-network.py
-\item\texttt{build\_policy\_network\_op} in policy-network.py
-\item\texttt{add\_loss\_op} in policy-network.py
-\item\texttt{add\_optimizer\_op} in policy-network.py
-\item\texttt{get\_returns} in policy-network.py
-\item\texttt{normalize\_advantage} in policy-network.py
-\item\texttt{add\_baseline\_op} in baseline-network.py
-\item\texttt{calculate\_advantage} in baseline-network.py
-\item\texttt{update\_baseline} in baseline-network.py
+\item\text{build\_mlp} in network-utils.py
+\item\text{add\_placeholders\_op} in policy-network.py
+\item\text{build\_policy\_network\_op} in policy-network.py
+\item\text{add\_loss\_op} in policy-network.py
+\item\text{add\_optimizer\_op} in policy-network.py
+\item\text{get\_returns} in policy-network.py
+\item\text{normalize\_advantage} in policy-network.py
+\item\text{add\_baseline\_op} in baseline-network.py
+\item\text{calculate\_advantage} in baseline-network.py
+\item\text{update\_baseline} in baseline-network.py
 \end{itemize}
 \subsection{Writeup Questions (15 pts)}
 \begin{enumerate}
@@ -252,6 +252,10 @@ python main.py --env_name pendulum --no-baseline --r_seed 15
 \end{verbatim}
 \end{tcolorbox}
 Include the tensorboard plot for the average reward. Do you notice any difference? Explain.
+
+\textbf{Answer:}
+
+With baseline, the result is more stable and continously increse reward. This is because baseline is reducing variance for our estimator.
 
 \item[(b)(ii) (2 pts)](InvertedPendulum-v1)
 Test your implementation on the InvertedPendulum-v1 environment by running

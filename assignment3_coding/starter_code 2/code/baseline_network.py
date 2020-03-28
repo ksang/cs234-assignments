@@ -51,16 +51,15 @@ class BaselineNetwork(object):
     ######################################################
     #########   YOUR CODE HERE - 4-8 lines.   ############
 
-    with tf.variable_scope(scope):
-        self.baseline = build_mlp(self.observation_placeholder,
-                                  1,
-                                  scope,
-                                  self.config.n_layers,
-                                  self.config.layer_size,
-                                  self.config.activation)
-        loss = tf.losses.mean_squared_error(self.baseline_target_placeholder, tf.squeeze(self.baseline))
-        optimizer = tf.train.AdamOptimizer(learning_rate=self.lr)
-        self.update_baseline_op = optimizer.minimize(loss)
+    self.baseline = build_mlp(self.observation_placeholder,
+                              1,
+                              scope,
+                              self.config.n_layers,
+                              self.config.layer_size,
+                              self.config.activation)
+    loss = tf.losses.mean_squared_error(self.baseline_target_placeholder, tf.squeeze(self.baseline))
+    optimizer = tf.train.AdamOptimizer(learning_rate=self.lr)
+    self.update_baseline_op = optimizer.minimize(loss)
 
     #######################################################
     #########          END YOUR CODE.          ############
@@ -86,6 +85,9 @@ class BaselineNetwork(object):
     #######################################################
     #########   YOUR CODE HERE - 1-4 lines.   ############
 
+    baseline = self.sess.run(self.baseline, feed_dict={self.observation_placeholder : observations}).squeeze()
+    adv = returns - baseline
+
     #######################################################
     #########          END YOUR CODE.          ############
     return adv
@@ -103,6 +105,9 @@ class BaselineNetwork(object):
     """
     #######################################################
     #########   YOUR CODE HERE - 1-5 lines.   ############
+
+    self.sess.run(self.update_baseline_op, feed_dict={self.baseline_target_placeholder : returns,
+                                                      self.observation_placeholder : observations})
 
     # TODO
     #######################################################
