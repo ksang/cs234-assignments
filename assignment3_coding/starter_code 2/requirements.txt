@@ -1,7 +1,7 @@
 gradescope-utils>=0.2.7
 subprocess32
 numpy==1.14.2
-tensorflow==1.15.2
+tensorflow==2.5.0
 gym==0.7.4
 scipy==1.2.0
 mujoco-py==0.5.7
