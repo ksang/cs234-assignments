@@ -1,6 +1,6 @@
 gradescope-utils>=0.2.7
 subprocess32
-numpy==1.14.2
+numpy==1.21.0
 tensorflow==2.6.4
 gym==0.7.4
 scipy==1.2.0
